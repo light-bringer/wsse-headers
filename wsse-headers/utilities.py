@@ -6,11 +6,12 @@ import hashlib
 import sys
 from Crypto import Random
 from Crypto.Cipher import AES
+import uuid
 
 class AESCipher(object):
 
     def __init__(self, key): 
-        self.bs = 32
+        self.bs = AES.block_size
         self.key = hashlib.sha256(key.encode()).digest()
 
     def encrypt(self, raw):
@@ -72,6 +73,15 @@ def decode_base64(encoded_string):
         raise
 
     return string
+
+
+def generate_nonce():
+    '''
+    Generate pseudo-random number and seconds since epoch (UTC).
+    '''
+    nonce = uuid.uuid4()
+    oauth_timestamp, oauth_nonce = str(nonce.time), nonce.hex
+    return oauth_nonce, oauth_timestamp
 
 
 
