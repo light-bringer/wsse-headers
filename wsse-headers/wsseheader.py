@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import utilities as utils
 
 
@@ -25,8 +27,5 @@ class WsseToken():
         self.__Organization = orgName
         self.__AuthToken = token
         self.__DateString = utils.gendate()
-        print("fuck you")
 
 
-a = WsseToken("", "", "")
-a.__init__("", "", "")
