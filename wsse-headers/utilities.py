@@ -3,7 +3,7 @@
 import datetime
 import base64
 import hashlib
-
+import sys
 
 def gendate(zone=datetime.timezone.utc):
     '''
@@ -29,10 +29,14 @@ def getmd5(string, algo='md5'):
 
 
 def decode_base64(encoded_string):
-    # b64str = ''.join(format(ord(x), 'b') for x in encoded_string)
-    b64str = bin(encoded_string)
-    string = None
-    base64.decode(b64str, string)
+    b64str = encoded_string.encode()
+    try:
+        string = base64.b64decode(b64str).decode('utf-8')
+    except Exception as e:
+        sys.stdout.write("Exception: %s\n"%(str(e)))
+        sys.stdout.flush()
+        raise
+
     return string
 
 
