@@ -9,6 +9,9 @@ from Crypto.Cipher import AES
 import uuid
 
 class AESCipher(object):
+    '''
+    AES Cipher Class for Python
+    '''
 
     def __init__(self, key): 
         self.bs = AES.block_size
@@ -77,7 +80,7 @@ def decode_base64(encoded_string):
 
 def generate_nonce():
     '''
-    Generate pseudo-random number and seconds since epoch (UTC).
+    Generate pseudo-random number and seconds since epoch (UTC)
     '''
     nonce = uuid.uuid4()
     oauth_timestamp, oauth_nonce = str(nonce.time), nonce.hex
