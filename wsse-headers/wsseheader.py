@@ -10,7 +10,7 @@ class WsseToken():
     # _DateString = None
 
     
-    def getdate(self):
+    def getDateTime(self):
         return str(self.__DateString)
     
 
@@ -26,6 +26,6 @@ class WsseToken():
         self.__UserName = username
         self.__Organization = orgName
         self.__AuthToken = token
-        self.__DateString = utils.gendate()
+        self.__DateString = utils.generateDateString()
 
 

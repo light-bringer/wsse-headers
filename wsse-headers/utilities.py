@@ -38,7 +38,7 @@ class AESCipher(object):
 
 
 
-def gendate(zone=datetime.timezone.utc):
+def generateDateString(zone=datetime.timezone.utc):
     '''
     generate a datetime string
     input : None
@@ -49,7 +49,7 @@ def gendate(zone=datetime.timezone.utc):
     return curDate.strftime(dateformat)
 
 
-def getmd5(string, algo='md5'):
+def generateMD5(string, algo='md5'):
     '''
     Function to return a md5 String
     input : string, algo=md5
@@ -61,7 +61,7 @@ def getmd5(string, algo='md5'):
     return m.hexdigest()
 
 
-def decode_base64(encoded_string):
+def decode_Base64(encoded_string):
     '''
     take a base64 string as <str> and decode it to original string as <str>
     input : encoded_string
