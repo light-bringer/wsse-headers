@@ -49,6 +49,19 @@ def generateDateString(zone=datetime.timezone.utc):
     return curDate.strftime(dateformat)
 
 
+def generateISOTimeString(zone=datetime.timezone.utc):
+    '''
+    generate a datetime string in ISO 8601 format
+    input : None (default_timezone = 'UTC')
+    return : datetime string in ISO 8601 format
+    '''
+    curdate = datetime.datetime.now(tz=zone).replace(microsecond=0)
+    formatted = curdate.strftime('%Y-%m-%d %H:%M:%S')
+    tz = str.format('{0:+06.2f}', float(str(zone)) / 3600)
+    final = formatted + tz
+    return final
+
+
 def generateMD5(string, algo='md5'):
     '''
     Function to return a md5 String
@@ -85,6 +98,10 @@ def generate_nonce():
     nonce = uuid.uuid4()
     oauth_timestamp, oauth_nonce = str(nonce.time), nonce.hex
     return oauth_nonce, oauth_timestamp
+
+
+def generatePasswordDigest():
+    pass
 
 
 
