@@ -1,0 +1,8 @@
+__title__ = 'WsseHeaders'
+__description__ = 'Python WsseHeaders generation Library for Humans.'
+__url__ = 'https://abc.xyz'
+__version__ = '0.0.1'
+__author__ = 'Debapriya Das'
+__author_email__ = 'yodebu@gmail.com'
+__license__ = 'MIT'
+__copyright__ = 'Copyright 2018 Debapriya Das'

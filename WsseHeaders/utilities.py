@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+'''
+WsseHeaders.utilities
+~~~~~~~~~~~~~~
+This module provides utility functions that are used within WsseHeaders
+that are also useful for external consumption.
+Note : but not currently exposed for external consumption
+'''
 
 import datetime
 import base64
@@ -7,20 +14,24 @@ import sys
 from Crypto import Random
 from Crypto.Cipher import AES
 import uuid
+import pytz
 
 class AESCipher(object):
     '''
     AES Cipher Class for Python
     '''
 
-    def __init__(self, key): 
-        self.bs = AES.block_size
-        self.key = hashlib.sha256(key.encode()).digest()
+    def __init__(self, key, BS=AES.block_size):
+        '''
+        input : key (key to encrypt), BS (Block Size)
+        '''
+        self.bs = BS
+        self.key = key
 
-    def encrypt(self, raw):
-        raw = self._pad(raw)
-        iv = Random.new().read(AES.block_size)
-        cipher = AES.new(self.key, AES.MODE_CBC, iv)
+    def encrypt(self, raw, iv, padding=False):
+        if padding:
+            raw = self._pad(raw)
+        cipher = AES.new(self.key, AES.MODE_CFB, iv)
         return base64.b64encode(iv + cipher.encrypt(raw))
 
     def decrypt(self, enc):
@@ -49,18 +60,16 @@ def generateDateString(zone=datetime.timezone.utc):
     return curDate.strftime(dateformat)
 
 
-def generateISOTimeString(zone=datetime.timezone.utc):
+def generateISOTimeString(zone='UTC'):
     '''
     generate a datetime string in ISO 8601 format
     input : None (default_timezone = 'UTC')
     return : datetime string in ISO 8601 format
     '''
-    curdate = datetime.datetime.now(tz=zone).replace(microsecond=0)
-    formatted = curdate.strftime('%Y-%m-%d %H:%M:%S')
-    tz = str.format('{0:+06.2f}', float(str(zone)) / 3600)
-    final = formatted + tz
-    return final
-
+    tz = pytz.timezone(zone)
+    curdate = tz.localize(datetime.datetime.now())
+    return curdate.isoformat()
+    
 
 def generateMD5(string, algo='md5'):
     '''
@@ -100,10 +109,16 @@ def generate_nonce():
     return oauth_nonce, oauth_timestamp
 
 
-def generatePasswordDigest():
-    pass
-
-
-
+def generatePasswordDigest(nonce, timestamp, secret):
+    concat_string = nonce + timestamp + secret
+    try:
+        sha1encoded = hashlib.sha1(concat_string.encode()).digest()
+        encoded_sha1_string = base64.b64encode(sha1encoded)
+        utf8encoded = encoded_sha1_string.decode('utf-8')
+    except Exception as e:
+        sys.stdout.write("Exception: %s\n"%(str(e)))
+        sys.stdout.flush()
+        raise
+    return utf8encoded
 
 
