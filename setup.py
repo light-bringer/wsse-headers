@@ -9,6 +9,7 @@ try:
 except:
     long_description = ""
 
+packages = ['WsseHeaders']
 
 requires = [
     'pycrypto>=2.6.1',
@@ -16,8 +17,8 @@ requires = [
 ]
 
 setuptools.setup(
-    name="wsse_headers",
-    version="0.0.1",
+    name="WsseHeaders",
+    version="0.0.1c",
     author="Debapriya Das",
     author_email="yodebu@gmail.com",
     description="A package to generate WSSE Headers",
@@ -25,6 +26,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/light-bringer/wsse-headers",
     # packages=setuptools.find_packages(),
+    packages = packages,
     python_requires=">=3.0, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
     install_requires=requires,
     classifiers=[
