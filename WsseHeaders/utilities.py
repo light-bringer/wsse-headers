@@ -29,16 +29,25 @@ class AESCipher(object):
         self.key = key
 
     def encrypt(self, raw, iv, padding=False):
+        print(iv)
         if padding:
             raw = self._pad(raw)
-        cipher = AES.new(self.key, AES.MODE_CFB, iv)
-        return base64.b64encode(iv + cipher.encrypt(raw))
+        try:
+            cipher = AES.new(self.key, AES.MODE_CFB, iv)
+            return base64.b64encode(iv + cipher.encrypt(raw))
+        except Exception as e:
+            print(e)
+            raise
 
     def decrypt(self, enc):
         enc = base64.b64decode(enc)
         iv = enc[:AES.block_size]
-        cipher = AES.new(self.key, AES.MODE_CBC, iv)
-        return self._unpad(cipher.decrypt(enc[AES.block_size:])).decode('utf-8')
+        try:
+            cipher = AES.new(self.key, AES.MODE_CBC, iv)
+            return self._unpad(cipher.decrypt(enc[AES.block_size:])).decode('utf-8')
+        except Exception as e:
+            print(e)
+            raise
 
     def _pad(self, s):
         return s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs)
@@ -67,7 +76,7 @@ def generateISOTimeString(zone='UTC'):
     return : datetime string in ISO 8601 format
     '''
     tz = pytz.timezone(zone)
-    curdate = tz.localize(datetime.datetime.now())
+    curdate = tz.localize(datetime.datetime.now().replace(microsecond=0))
     return curdate.isoformat()
     
 
