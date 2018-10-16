@@ -5,3 +5,4 @@ WsseHeaders.egg-info/
 build/
 dist/
 wsse_headers.egg-info/
+.vscode/
