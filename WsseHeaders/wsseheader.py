@@ -23,9 +23,9 @@ class WsseToken():
 
     
     def __init__(self, username, orgName, token, pad=False):
-        if username is None:
+        if username is None or username is "":
             raise ValueError
-        elif orgName is None:
+        elif orgName is None or orgName  is "":
             raise ValueError
         elif token is None or len(token) < 16:
             raise ValueError
