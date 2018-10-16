@@ -1,13 +1,18 @@
 # Python code to demonstrate working of unittest 
 import unittest
-import utilities as ut
+import WsseHeaders
 
 class TestUtilsMethods(unittest.TestCase): 
 	
 	def setUp(self): 
 		pass
 
-	# Returns True if the .
+
+class TestWSSEMethods(unittest.TestCase): 
+	
+	def setUp(self): 
+		pass
+
 
 if __name__ == '__main__': 
 	unittest.main() 
