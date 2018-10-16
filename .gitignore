@@ -1,3 +1,7 @@
 *.pyc
 env/
 .idea/
+WsseHeaders.egg-info/
+build/
+dist/
+wsse_headers.egg-info/
