@@ -46,4 +46,4 @@ How to Contribute
     works as expected.
 4.  Send a pull request and bug the maintainer until it gets merged and
     published. :) Make sure to add yourself to
-    [AUTHORS](https://github.com/requests/requests/blob/master/AUTHORS.rst).
+    [AUTHORS](https://github.com/light-bringer/wsse-headers/blob/master/AUTHORS.rst).
