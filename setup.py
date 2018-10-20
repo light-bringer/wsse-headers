@@ -77,7 +77,7 @@ requires = [
 
 setuptools.setup(
     name="WsseHeaders",
-    version="0.0.7",
+    version="0.0.7c",
     author="Debapriya Das",
     author_email="yodebu@gmail.com",
     description="A package to generate WSSE Headers",
