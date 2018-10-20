@@ -6,3 +6,4 @@ build/
 dist/
 wsse_headers.egg-info/
 .vscode/
+.tox/
