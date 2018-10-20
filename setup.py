@@ -9,7 +9,7 @@ try:
 except:
     long_description = """
     WsseHeaders: WSSE for Python™
-        ==========================
+    ==========================
 
 
         WsseHeaders is the only WSSE Token generation library for Python, safe for human
@@ -23,8 +23,17 @@ except:
         UsernameToken Username="yodebu", PasswordDigest="EU4mrjk9tD3AVl3N1oJ6Yc+PA4k=", Nonce="e52165a00ae24d62bd44adb96f7c95dd", Created="2018-10-16T19:51:43+00:00", Organization="EXAMPLE_ORG"
         ```
 
+        optional parameter: ``` pad ``` which is defaulted to ``` False``` and takes only Boolean values.
 
-        WsseHeaders officially supports Python 3.1 and above.
+        ``` {.sourceCode .python}
+        >>> import WsseHeaders
+        >>> r = WsseHeaders.WsseToken(username="yodebu", orgName="yodebu", token="base64tokenstring", pad=True)
+        >>> r.generateHeaders()
+        UsernameToken Username="yodebu", PasswordDigest="EU4mrjk9tD3AVl3N1oJ6Yc+PA4k=", Nonce="e52165a00ae24d62bd44adb96f7c95dd", Created="2018-10-16T19:51:43+00:00", Organization="EXAMPLE_ORG"
+        ```
+
+
+        WsseHeaders officially supports Python 3.0 and above.
 
         Installation
         ------------
@@ -57,7 +66,6 @@ except:
         4.  Send a pull request and bug the maintainer until it gets merged and
             published. :) Make sure to add yourself to
             [AUTHORS](https://github.com/light-bringer/wsse-headers/blob/master/AUTHORS.rst).
-
     """
 
 packages = ['WsseHeaders']
