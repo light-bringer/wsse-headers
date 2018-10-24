@@ -15,6 +15,17 @@ from Crypto import Random
 from Crypto.Cipher import AES
 import uuid
 import pytz
+import string
+import random
+
+
+__NONCE_LENGTH__ = 16
+__NONCE_METHOD_UUID__ = 0
+__NONCE_METHOD_RANDOM__ = 1
+
+
+
+
 
 class AESCipher(object):
     '''
@@ -130,4 +141,27 @@ def generatePasswordDigest(nonce, timestamp, secret):
         raise
     return utf8encoded
 
+
+def get_random_ascii_string(length=__NONCE_LENGTH__, allowed_chars=None):
+   '''
+   source: https://github.com/PrincetonUniversity/pywsse/blob/master/wsse/utils.py
+   Generate a random string of the given length.
+   :param length: length of the string (defaults to settings.NONCE_LENGTH)
+   :rtype length: int
+   :param allowed_chars: characters to allow in string
+   :rtype allowed_chars: str
+   :return: generated string
+   :rtype: str
+   '''
+   if allowed_chars is None:
+       try:
+           allowed_chars = string.letters
+       except AttributeError:
+           allowed_chars = string.ascii_letters
+
+   if length is None:
+       length = __NONCE_LENGTH__
+
+   randomstr = ''.join(random.choice(allowed_chars) for _ in range(length))
+   return randomstr
 
