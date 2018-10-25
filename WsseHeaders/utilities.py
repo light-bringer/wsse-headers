@@ -87,7 +87,7 @@ def generateISOTimeString(zone='UTC'):
     return : datetime string in ISO 8601 format
     '''
     tz = pytz.timezone(zone)
-    curdate = tz.localize(datetime.datetime.now().replace(microsecond=0))
+    curdate = tz.localize(datetime.datetime.utcnow().replace(microsecond=0))
     return curdate.isoformat()
     
 

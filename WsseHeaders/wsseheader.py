@@ -46,7 +46,7 @@ class WsseToken():
         print(iv, secret_key)
         base64iv = base64.b64encode(iv.encode())
         AESObj = utils.AESCipher(secret_key)
-        self.__secret = AESObj.encrypt(self.__TOKEN, base64iv)
+        self.__secret = AESObj.encrypt(self.__AuthToken, base64iv)
         self.__b64_nonce, self.__nonce = utils.generate_nonce()
         print(self.__b64_nonce.decode(), self.__nonce)
 
