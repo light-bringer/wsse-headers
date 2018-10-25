@@ -39,17 +39,17 @@ class WsseToken():
         base64iv = utils.base64.b64encode(iv.encode())
         AESObj = utils.AESCipher(key)
         self.__secret = AESObj.encrypt(token, base64iv, padding=pad)
-        self.__nonce = utils.generate_nonce()[0]
+        self.__b64_nonce = utils.generate_nonce()
 
     def generateHeaders(self):
         try:
             passworddigest = utils.generatePasswordDigest(
-                self.__nonce, self.__DateString, self.__secret.decode('ASCII')
+                self.__b64_nonce, self.__DateString, self.__secret.decode('ASCII')
             )
             header = 'UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s", Organization="%s"'%(
                 self.__UserName,
                 passworddigest, 
-                self.__nonce , self.__DateString, 
+                self.__b64_nonce , self.__DateString, 
                 self.__Organization)
             return header
         except Exception as e:

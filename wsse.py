@@ -85,7 +85,7 @@ def generate_timestamp_string():
    2018-09-28T16:12:56+00:00
    :return: now in format like above
    '''
-   return datetime.datetime.utcnow().replace(microsecond=0).replace(tzinfo=utc).isoformat()
+   return datetime.datetime.utcnow().replace(microsecond=0).replace(tzinfo=datetimutc).isoformat()
 
 
 def generate_header(user_name, token, organisation):
