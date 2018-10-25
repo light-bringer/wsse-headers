@@ -35,7 +35,7 @@ class WsseToken():
         self.__AuthToken = token
         self.__DateString = utils.generateISOTimeString()
         key = utils.generateMD5(self.__UserName)
-        iv = utils.decode_Base64(self.__AuthToken)
+        iv = utils.decode_Base64(self.__AuthToken[:16])
         base64iv = utils.base64.b64encode(iv.encode())
         AESObj = utils.AESCipher(key)
         self.__secret = AESObj.encrypt(token, base64iv, padding=pad)
