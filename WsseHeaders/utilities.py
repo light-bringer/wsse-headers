@@ -41,11 +41,10 @@ class AESCipher(object):
         self.mode = mode
 
     def encrypt(self, raw, iv, padding=False):
-        print(iv)
         if padding:
             raw = self._pad(raw)
         try:
-            cipher = AES.new(self.key, self.mode, iv, segment_size=8*AES.block_size)
+            cipher = AES.new(self.key, self.mode, iv, segment_size=8*self.bs)
             return base64.b64encode(iv + cipher.encrypt(raw))
         except Exception as e:
             print(e)
@@ -126,7 +125,6 @@ def generate_nonce(length=__NONCE_LENGTH__, default_method=__NONCE_METHOD_RANDOM
     '''
     if default_method == __NONCE_METHOD_RANDOM__:
         random_str = get_random_ascii_string(length=length*2)
-        print(random_str)
         nonce = hashlib.md5(random_str.encode()).digest()[0:length]
         print(nonce)
     elif default_method == __NONCE_METHOD_UUID__:
@@ -136,21 +134,23 @@ def generate_nonce(length=__NONCE_LENGTH__, default_method=__NONCE_METHOD_RANDOM
        raise Exception('Unknown random method to create nonce')
     
     nonce_base64 = base64.b64encode(nonce)
-    return nonce_base64
+    return nonce_base64,nonce
 
 
-def generatePasswordDigest(b64_nonce, timestamp, secret):
+def generatePasswordDigest(nonce, b64_nonce, timestamp, secret):
     nonce = base64.b64decode(b64_nonce)
-    concat_string = b64_nonce + timestamp + secret
+    concat_string_byte = nonce + timestamp.encode('ascii') + secret.encode()
     try:
-        sha1encoded = hashlib.sha1(concat_string.encode()).digest()
-        encoded_sha1_string = base64.b64encode(sha1encoded)
-        utf8encoded = encoded_sha1_string.decode('ascii')
+        hashd = hashlib.sha1()
+        hashd.update(concat_string_byte)
+        hash_digest = hashd.digest()
+        pwd_digest = base64.b64encode(hash_digest)
+        ascii_pwd_digest = pwd_digest.decode('ascii')
     except Exception as e:
         sys.stdout.write("Exception: %s\n"%(str(e)))
         sys.stdout.flush()
         raise
-    return utf8encoded
+    return ascii_pwd_digest
 
 
 def get_random_ascii_string(length=__NONCE_LENGTH__, allowed_chars=None):
