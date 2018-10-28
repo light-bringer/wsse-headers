@@ -5,11 +5,9 @@ import base64
 
 
 class WsseToken():
-    # _UserName = None
-    # _Organization = None
-    # _AuthToken = None
-    # _DateString = None
-
+    '''
+    WSSE Token 
+    '''
     
     def getDateTime(self):
         return str(self.__DateString)
@@ -24,16 +22,22 @@ class WsseToken():
     
 
     def __str__(self):
+        '''
+        str function
+        '''
         return  str(self.__class__) + '\n'+ '\n'.join(('{} = {}, {}'.format(item, self.__dict__[item], type(self.__dict__[item])) for item in self.__dict__))
 
+
     def __init__(self, username, orgName, token):
+        '''
+        init function
+        '''
         if username is None or username is "":
             raise ValueError
         elif orgName is None or orgName  is "":
             raise ValueError
         elif token is None or len(token) < 16:
-            raise ValueError
-            
+            raise ValueError      
         self.__UserName = username
         self.__Organization = orgName
         self.__TOKEN = token
@@ -41,13 +45,15 @@ class WsseToken():
         secret_key = utils.generateMD5(self.__UserName)
         iv = utils.decode_Base64(self.__TOKEN)
         self.base64iv = iv[:16]
-        print(self.base64iv)
         AES_obj = utils.AESCipher(secret_key)
         self.__secret = AES_obj.encrypt(raw=self.__TOKEN, iv=self.base64iv, padding=True)
         self.__b64_nonce, self.__nonce = utils.generate_nonce()
-        print(self.__b64_nonce.decode(), self.__nonce)
+
 
     def generateHeaders(self):
+        '''
+        generate WSSE Headers
+        '''
         try:
             passworddigest = utils.generatePasswordDigest(
                 self.__nonce, self.__b64_nonce, self.__DateString, self.__secret.decode('ASCII')

@@ -35,25 +35,30 @@ class AESCipher(object):
     def _pad(self, s):
         return s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs)
 
+
     @staticmethod
     def _unpad(s):
         return s[:-ord(s[len(s)-1:])]
-    
+
+
     def __str__(self):
         return  str(self.__class__) + '\n'+ '\n'.join(('{} = {}, {}'.format(item, self.__dict__[item], type(self.__dict__[item])) for item in self.__dict__))
-
 
 
     def __init__(self, key, BS=AES.block_size, mode=AES.MODE_CFB):
         '''
         input : key (key to encrypt), BS (Block Size)
         '''
-        self.bs = 16
+        self.bs = BS
         self.key = key
         self.mode = mode
         self.__pad = lambda s: s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs)
 
+
     def encrypt(self, raw, iv, padding=False):
+        '''
+        Encrypt : encrypt a raw string from an iv
+        '''
         if padding:
             raw = self.__pad(raw)
         try:
@@ -64,6 +69,7 @@ class AESCipher(object):
         except Exception as e:
             print(e)
             raise
+
 
     def decrypt(self, enc):
         enc = base64.b64decode(enc)
@@ -86,20 +92,24 @@ def generateDateString(zone='UTC'):
     return : datetime string of UTC 
     '''
     dateformat = str('%Y%m%d%H%M%S')
-    curDate = datetime.datetime.now(tz=zone).replace(microsecond=0)
+    curDate = datetime.datetime.utcnow(tz=zone).replace(microsecond=0)
     return curDate.strftime(dateformat)
 
 
-def generateISOTimeString(zone='UTC'):
+
+
+def generateISOTimeString(zone=pytz.UTC.__str__):
     '''
     generate a datetime string in ISO 8601 format
     input : None (default_timezone = 'UTC')
     return : datetime string in ISO 8601 format
     '''
-    tz = pytz.timezone(zone)
+    tz = pytz.timezone(pytz.utc)
     curdate = tz.localize(datetime.datetime.utcnow().replace(microsecond=0))
     return curdate.isoformat()
-    
+
+
+
 
 def generateMD5(string, algo='md5'):
     '''
@@ -111,6 +121,8 @@ def generateMD5(string, algo='md5'):
     string = string.encode('ascii')
     m.update(string)
     return m.hexdigest()
+
+
 
 
 def decode_Base64(encoded_string):
@@ -129,6 +141,8 @@ def decode_Base64(encoded_string):
     return decodedstring
 
 
+
+
 def generate_nonce(length=__NONCE_LENGTH__, default_method=__NONCE_METHOD_RANDOM__):
     '''
     Generate a random number
@@ -136,7 +150,6 @@ def generate_nonce(length=__NONCE_LENGTH__, default_method=__NONCE_METHOD_RANDOM
     if default_method == __NONCE_METHOD_RANDOM__:
         random_str = get_random_ascii_string(length=length*2)
         nonce = hashlib.md5(random_str.encode()).digest()[0:length]
-        print(nonce)
     elif default_method == __NONCE_METHOD_UUID__:
         random_str = str(uuid.uuid4()).encode('ascii')
         nonce = hashlib.md5(random_str).digest()[0:length]
@@ -147,9 +160,11 @@ def generate_nonce(length=__NONCE_LENGTH__, default_method=__NONCE_METHOD_RANDOM
     return nonce_base64,nonce
 
 
+
+
 def generatePasswordDigest(nonce, b64_nonce, timestamp, secret):
     nonce = base64.b64decode(b64_nonce)
-    concat_string_byte = nonce + timestamp.encode('ascii') + secret.encode('ascii')
+    concat_string_byte = nonce + timestamp.encode('ascii') + secret.encode()
     try:
         hashd = hashlib.sha1()
         hashd.update(concat_string_byte)
@@ -161,6 +176,8 @@ def generatePasswordDigest(nonce, b64_nonce, timestamp, secret):
         sys.stdout.flush()
         raise
     return ascii_pwd_digest
+
+
 
 
 def get_random_ascii_string(length=__NONCE_LENGTH__, allowed_chars=None):
@@ -186,5 +203,3 @@ def get_random_ascii_string(length=__NONCE_LENGTH__, allowed_chars=None):
     randomstr = ''.join(random.choice(allowed_chars) for _ in range(length))
     
     return randomstr
-
-
