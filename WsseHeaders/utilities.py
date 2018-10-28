@@ -32,20 +32,35 @@ class AESCipher(object):
     AES Cipher Class for Python
     '''
 
+    def _pad(self, s):
+        return s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs)
+
+    @staticmethod
+    def _unpad(s):
+        return s[:-ord(s[len(s)-1:])]
+    
+    def __str__(self):
+        return  str(self.__class__) + '\n'+ '\n'.join(('{} = {}, {}'.format(item, self.__dict__[item], type(self.__dict__[item])) for item in self.__dict__))
+
+
+
     def __init__(self, key, BS=AES.block_size, mode=AES.MODE_CFB):
         '''
         input : key (key to encrypt), BS (Block Size)
         '''
-        self.bs = BS
+        self.bs = 16
         self.key = key
         self.mode = mode
+        self.__pad = lambda s: s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs)
 
     def encrypt(self, raw, iv, padding=False):
         if padding:
-            raw = self._pad(raw)
+            raw = self.__pad(raw)
         try:
             cipher = AES.new(self.key, self.mode, iv, segment_size=8*self.bs)
-            return base64.b64encode(iv + cipher.encrypt(raw))
+            encrypted = cipher.encrypt(raw)
+            secret = base64.b64encode((iv.encode() + base64.b64encode(encrypted)))
+            return secret
         except Exception as e:
             print(e)
             raise
@@ -59,17 +74,12 @@ class AESCipher(object):
         except Exception as e:
             print(e)
             raise
-
-    def _pad(self, s):
-        return s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs)
-
-    @staticmethod
-    def _unpad(s):
-        return s[:-ord(s[len(s)-1:])]
+    
 
 
 
-def generateDateString(zone=datetime.timezone.utc):
+
+def generateDateString(zone='UTC'):
     '''
     generate a datetime string
     input : None
@@ -139,7 +149,7 @@ def generate_nonce(length=__NONCE_LENGTH__, default_method=__NONCE_METHOD_RANDOM
 
 def generatePasswordDigest(nonce, b64_nonce, timestamp, secret):
     nonce = base64.b64decode(b64_nonce)
-    concat_string_byte = nonce + timestamp.encode('ascii') + secret.encode()
+    concat_string_byte = nonce + timestamp.encode('ascii') + secret.encode('ascii')
     try:
         hashd = hashlib.sha1()
         hashd.update(concat_string_byte)
@@ -176,4 +186,5 @@ def get_random_ascii_string(length=__NONCE_LENGTH__, allowed_chars=None):
     randomstr = ''.join(random.choice(allowed_chars) for _ in range(length))
     
     return randomstr
+
 
