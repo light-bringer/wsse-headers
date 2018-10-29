@@ -98,13 +98,13 @@ def generateDateString(zone='UTC'):
 
 
 
-def generateISOTimeString(zone=pytz.UTC.__str__):
+def generateISOTimeString(zone='utc'):
     '''
     generate a datetime string in ISO 8601 format
     input : None (default_timezone = 'UTC')
     return : datetime string in ISO 8601 format
     '''
-    tz = pytz.timezone(pytz.utc)
+    tz = pytz.timezone(zone)
     curdate = tz.localize(datetime.datetime.utcnow().replace(microsecond=0))
     return curdate.isoformat()
 
