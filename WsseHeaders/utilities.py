@@ -193,6 +193,11 @@ def get_random_ascii_string(length=__NONCE_LENGTH__, allowed_chars=None):
     '''
     if allowed_chars is None:
         try:
+            allowed_chars = string.digits
+        except AttributeError:
+            allowed_chars = string.digits
+    else:
+        try:
             allowed_chars = string.letters
         except AttributeError:
             allowed_chars = string.ascii_letters
