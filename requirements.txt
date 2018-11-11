@@ -22,8 +22,11 @@ Pygments==2.2.0
 pylint==2.1.1
 pyparsing==2.2.2
 pytz==2018.5
+<<<<<<< HEAD
 PyYAML==3.13
 requests==2.19.1
+=======
+>>>>>>> e62969a7a0b9a547b128947a56f1786f69862db4
 shellescape==3.4.1
 six==1.11.0
 snowballstemmer==1.2.1
@@ -32,6 +35,9 @@ sphinxcontrib-websupport==1.1.0
 toml==0.10.0
 tox==3.5.2
 typed-ast==1.1.0
+<<<<<<< HEAD
 urllib3==1.23
+=======
+>>>>>>> e62969a7a0b9a547b128947a56f1786f69862db4
 virtualenv==16.0.0
 wrapt==1.10.11
