@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from . import utilities as utils
 import base64
+from AES import AESCipher
+from . import utilities as utils
+
 
 
 class WsseToken():
@@ -10,14 +12,23 @@ class WsseToken():
     '''
     
     def getDateTime(self):
+        '''
+        get Date value
+        '''
         return str(self.__DateString)
     
 
     def getOrg(self):
+        '''
+        get Organisation value
+        '''
         return str(self.__Organization)
     
 
     def getUser(self):
+        '''
+        get User value
+        '''
         return str(self.__UserName)
     
 
@@ -45,22 +56,22 @@ class WsseToken():
         secret_key = utils.generateMD5(self.__UserName)
         iv = utils.decode_Base64(self.__TOKEN)
         self.base64iv = iv[:16]
-        AES_obj = utils.AESCipher(secret_key)
+        AES_obj = AESCipher(secret_key)
         self.__secret = AES_obj.encrypt(raw=self.__TOKEN, iv=self.base64iv, padding=False)
         self.__b64_nonce, self.__nonce = utils.generate_nonce()
 
 
-    def generateHeaders(self):
+    def generateHeaderString(self):
         '''
-        generate WSSE Headers
+        generate WSSE Header String
         '''
         try:
-            passworddigest = utils.generatePasswordDigest(
+            self.__PasswordDigest = utils.generatePasswordDigest(
                 self.__nonce, self.__b64_nonce, self.__DateString, self.__secret.decode('ASCII')
             )
             header = 'UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s", Organization="%s"'%(
                 self.__UserName,
-                passworddigest, 
+                self.__PasswordDigest, 
                 self.__b64_nonce.decode() , self.__DateString, 
                 self.__Organization)
             return header
@@ -69,3 +80,12 @@ class WsseToken():
             raise
 
 
+    def generateHeader(self):
+        '''
+        returns a dictionary with the WsseString
+        '''
+        return {
+            'Authorization': 'WSSE profile="UsernameToken"',
+            'X-WSSE': self.generateHeaderString(),
+            'Accept':'Application/json'
+        }
