@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import base64
-from AES import AESCipher
+from .AES import AESCipher
 from . import utilities as utils
 
 
