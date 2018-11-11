@@ -5,25 +5,31 @@ WsseHeaders: WSSE for Python™
 WsseHeaders is the only WSSE Token generation library for Python, safe for human
 consumption.
 
+Initialize the WsseHeader module
 
 ``` {.sourceCode .python}
 >>> import WsseHeaders
->>> r = WsseHeaders.WsseToken(username="yodebu", orgName="yodebu", token="base64tokenstring")
->>> r.generateHeaders()
-UsernameToken Username="yodebu", PasswordDigest="EU4mrjk9tD3AVl3N1oJ6Yc+PA4k=", Nonce="e52165a00ae24d62bd44adb96f7c95dd", Created="2018-10-16T19:51:43+00:00", Organization="EXAMPLE_ORG"
+>>> WsseTokenObject = WsseHeaders.WsseToken(username="yodebu", orgName="yodebuOrg", token="base64tokenstring")
 ```
 
-optional parameter: ``` pad ``` which is defaulted to ``` False``` and takes only Boolean values.
+Generate the Header String as required : 
 
 ``` {.sourceCode .python}
->>> import WsseHeaders
->>> r = WsseHeaders.WsseToken(username="yodebu", orgName="yodebu", token="base64tokenstring", pad=True)
->>> r.generateHeaders()
-UsernameToken Username="yodebu", PasswordDigest="EU4mrjk9tD3AVl3N1oJ6Yc+PA4k=", Nonce="e52165a00ae24d62bd44adb96f7c95dd", Created="2018-10-16T19:51:43+00:00", Organization="EXAMPLE_ORG"
+>>> WsseTokenObject.generateHeaderString()
+'UsernameToken Username="yodebu", PasswordDigest="SXoO32oqIKFOl63mvsMoW+HPcHo=", Nonce="/lruYfbC12FfjiqFLgJxVw==", Created="2018-11-11T10:50:49+00:00", Organization="yodebuOrg"'
+```
+Get the Authentication Headers as Dictionary which can be easily converted to JSON: 
+
+``` {.sourceCode .python}
+>>> WsseTokenObject.generateHeader()
+{
+    'Authorization': 'WSSE profile="UsernameToken"', 
+    'X-WSSE': 'UsernameToken Username="yodebu", PasswordDigest="SXoO32oqIKFOl63mvsMoW+HPcHo=", Nonce="/lruYfbC12FfjiqFLgJxVw==", Created="2018-11-11T10:50:49+00:00", Organization="yodebuOrg"', 
+    'Accept': 'Application/json'
+}
 ```
 
-
-WsseHeaders officially supports Python 3.0 and above.
+WsseHeaders officially supports Python 3.0 and above. Python 2.7 support coming soon.
 
 Installation
 ------------
