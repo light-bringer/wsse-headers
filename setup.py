@@ -71,7 +71,7 @@ except:
 packages = ['WsseHeaders']
 
 requires = [
-    'pycrypto>=2.6.1',
+    'pycryptodome>=3.7.0',
     'pytz>=2018.5'
 ]
 

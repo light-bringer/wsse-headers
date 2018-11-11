@@ -46,7 +46,7 @@ class WsseToken():
         iv = utils.decode_Base64(self.__TOKEN)
         self.base64iv = iv[:16]
         AES_obj = utils.AESCipher(secret_key)
-        self.__secret = AES_obj.encrypt(raw=self.__TOKEN, iv=self.base64iv, padding=True)
+        self.__secret = AES_obj.encrypt(raw=self.__TOKEN, iv=self.base64iv, padding=False)
         self.__b64_nonce, self.__nonce = utils.generate_nonce()
 
 

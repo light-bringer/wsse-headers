@@ -52,18 +52,19 @@ class AESCipher(object):
         self.bs = BS
         self.key = key
         self.mode = mode
+        self.__pad0 = lambda s: s + (32 - len(s) % 32) * '0'
         self.__pad = lambda s: s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs)
-
 
     def encrypt(self, raw, iv, padding=False):
         '''
         Encrypt : encrypt a raw string from an iv
         '''
         if padding:
-            raw = self.__pad(raw)
+            raw = self.__pad0(raw)
         try:
-            cipher = AES.new(self.key, self.mode, iv, segment_size=8*self.bs)
-            encrypted = cipher.encrypt(raw)
+            AES.MODE_CFB
+            cipher = AES.new(key=self.key.encode(), mode=self.mode, IV=iv.encode(), segment_size=8*self.bs)
+            encrypted = cipher.encrypt(raw.encode())
             secret = base64.b64encode((iv.encode() + base64.b64encode(encrypted)))
             return secret
         except Exception as e:
