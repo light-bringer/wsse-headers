@@ -9,7 +9,7 @@ pkginfo==1.4.2
 pluggy==0.8.0
 py==1.7.0
 pycryptodome==3.7.0
-Pygments==2.2.0
+Pygments==2.7.4
 pytz==2018.7
 readme-renderer==24.0
 requests==2.20.1
