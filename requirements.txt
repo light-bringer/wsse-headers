@@ -7,7 +7,7 @@ filelock==3.0.10
 idna==2.7
 pkginfo==1.4.2
 pluggy==0.8.0
-py==1.7.0
+py==1.10.0
 pycryptodome==3.7.0
 Pygments==2.2.0
 pytz==2018.7
